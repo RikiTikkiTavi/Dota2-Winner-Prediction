@@ -1,11 +1,5 @@
 import pandas as pd
-
-
-def out(h, v):
-    print(h + ":")
-    print(v)
-    print("----")
-    print(" ")
+from src.utils import out
 
 
 def remove_cheat_props(data, columns_to_drop):
@@ -30,12 +24,13 @@ def handle_empty(data, columns_with_empty, value):
 
 def prepare_data():
     features = pd.read_csv('./data/features.csv', index_col='match_id')
+    features = features.sample(n=round(len(features.index)/2))
     columns_to_drop = ['duration', 'tower_status_radiant', 'tower_status_dire',
                        'barracks_status_radiant',
                        'barracks_status_dire']
     data = remove_cheat_props(features, columns_to_drop)
     columns_with_empty = detect_empty_columns(data)
-    out("Empty columns", columns_with_empty)
+    out("Empty columns: ", columns_with_empty)
     data = handle_empty(data, columns_with_empty, 0)
 
     return data
