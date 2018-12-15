@@ -1,6 +1,7 @@
 import datetime
 from sklearn.model_selection import KFold
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 import numpy as np
 
@@ -38,8 +39,7 @@ def get_best_quality_trees_number(qualities, step):
     return trees_quantity, max_quality
 
 
-def process_data(X, y):
-
+def process_data_gb(X, y):
     # 5)
 
     # Зафиксируйте генератор разбиений для кросс-валидации по 5 блокам (KFold)
@@ -70,3 +70,109 @@ def process_data(X, y):
     # 1) Уменьшение максимальной глубины деревьев (параметр max_depth)
     # 2) Использование подбвыборки для обучения и кросс-валидации
     # 3) Удаление столбцов, feature_importance которых равняется 0 при текущем колл-ве деревьев.
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+def process_lr(kf, X, y, c_list_iterator):
+    qualities = []
+
+    for i in c_list_iterator:
+
+        start_time = datetime.datetime.now()
+        clf = LogisticRegression(penalty='l2', C=i, solver="lbfgs", max_iter=200)
+        qualities_c = []
+        for train_index, test_index in kf.split(X):
+            x_train, x_test = X[train_index], X[test_index]
+            y_train, y_test = y[train_index], y[test_index]
+
+            clf = clf.fit(x_train, y_train)
+            predictions = clf.predict_proba(x_test)[:, 1]
+            qualities_c.append(roc_auc_score(y_test, predictions))
+
+        mean_quality = round(np.mean(qualities_c), 5)
+        qualities.append(mean_quality)
+
+        print("C: " + str(i))
+        print('Time:', datetime.datetime.now() - start_time)
+        print("Quality AUC-ROC: " + str(mean_quality))
+
+    return qualities
+
+
+class CList:
+
+    def __init__(self, start, stop, step):
+        self.start = start
+        self.stop = stop
+        self.step = step
+
+    def __iter__(self):
+        self.c = self.start
+        return self
+
+    def __next__(self):
+        if self.c <= self.stop:
+            x = self.c
+            self.c += self.step
+            return x
+        else:
+            raise StopIteration
+
+
+def get_best_quality_c(qualities, start, step):
+    max_q = max(qualities)
+    best_c = (qualities.index(max_q) + start) * step
+    return max_q, best_c
+
+
+def process_data_lr(X, y):
+    kf = KFold(n_splits=5, shuffle=True)
+    start, stop, step = 1, 5, 0.1
+    c_estimated = True  # False, если нужно подобрать заново
+    best_c = 3.8
+    if c_estimated:
+        start, stop, step = best_c, best_c, best_c
+    c_list_iterator = iter(CList(start, stop, step))
+    # ------------------------------------------------------------------------------------------------------------------
+
+    # 1.
+    # Какое качество получилось у логистической регрессии над всеми исходными признаками?
+    # Как оно соотносится с качеством градиентного бустинга?
+    # Чем вы можете объяснить эту разницу?
+    # Быстрее ли работает логистическая регрессия по сравнению с градиентным бустингом?
+
+    qualities = process_lr(kf, X, y, c_list_iterator)
+    max_q, best_c = get_best_quality_c(qualities, start, step)
+
+    print("Max quality: ", max_q)  # Без масштабирования: 0.51602. С масштабированием: 0.71024
+    if not c_estimated:
+        print("Best C: ", best_c)  # 3.8
+
+    # Ответ:
+    # Качество у логистической регрессии над всеми исходными признаками: 0.71024
+    # Выше качества градиентного бустинга (0.6997) на 0.01054
+    # Логистическая лучше находит зависимости в текущих данных.
+    # Логистическая регрессия работает быстрее. (время Бустинг / регрессия: 0:00:57.463733 / 0:00:00.739182)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    # 2.
+    # 2. Среди признаков в выборке есть категориальные, которые мы использовали как числовые, что вряд ли является
+    # хорошей идеей. Категориальных признаков в этой задаче одиннадцать: lobby_type и r1_hero, r2_hero, ..., r5_hero,
+    # d1_hero, d2_hero, ..., d5_hero. Уберите их из выборки, и проведите кросс-валидацию для логистической регрессии на
+    # новой выборке с подбором лучшего параметра регуляризации.
+    # Изменилось ли качество?
+    # Чем вы можете это объяснить?
+
+    # Качество: 0.71483 при C = 1.1
+    # Разница в качестве незначительна, т.к у признаков маленькие веса => итоговое значение принадлежности к классу не
+    # зависит от данных признаков в данной форме.
+    # ------------------------------------------------------------------------------------------------------------------
+
+    # 3.
+    # Какое получилось качество при добавлении "мешка слов" по героям?
+    # Улучшилось ли оно по сравнению с предыдущим вариантом? Чем вы можете это объяснить?
+
+    # Качество: 0.75201 при С = 3.8000000000000003
+    # После использование мешка слов качество заметно улучшилось. Это связано с тем, что комманда имеет больший шанс
+    # выйграть, если в ней присутствуют определенные герои.
