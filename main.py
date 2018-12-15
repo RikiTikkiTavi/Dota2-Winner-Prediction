@@ -2,7 +2,9 @@ from src.data_preparation import prepare_data_gb
 from src.data_preparation import prepare_data_lr
 from src.data_processing import process_data_gb
 from src.data_processing import process_data_lr
+from src.data_processing import test_lr
 from src.data_visualiazation import visualize
+import os.path
 
 
 def main():
@@ -10,8 +12,12 @@ def main():
     # X, y = prepare_data_gb('radiant_win')
     # process_data_gb(X, y)
 
-    X, y = prepare_data_lr('radiant_win')
-    process_data_lr(X, y)
+    if not os.path.isfile('./models/lr.joblib'):
+        X, y = prepare_data_lr('radiant_win', 'features.csv')
+        process_data_lr(X, y)
+
+    X, y = prepare_data_lr('radiant_win', 'features_test.csv', True)
+    test_lr(X, y)
 
 
 main()

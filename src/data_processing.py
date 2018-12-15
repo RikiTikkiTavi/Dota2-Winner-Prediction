@@ -4,6 +4,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 import numpy as np
+from joblib import dump, load
 
 
 def process_gradient_boosting(n_estimators, step, kf, X, y):
@@ -74,13 +75,11 @@ def process_data_gb(X, y):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def process_lr(kf, X, y, c_list_iterator):
+def process_lr(kf, X, y, c_list_iterator, model_name, dump_clf):
     qualities = []
-
-    for i in c_list_iterator:
-
+    for i, c in enumerate(c_list_iterator):
         start_time = datetime.datetime.now()
-        clf = LogisticRegression(penalty='l2', C=i, solver="lbfgs", max_iter=200)
+        clf = LogisticRegression(penalty='l2', C=c, solver="lbfgs", max_iter=200)
         qualities_c = []
         for train_index, test_index in kf.split(X):
             x_train, x_test = X[train_index], X[test_index]
@@ -93,9 +92,12 @@ def process_lr(kf, X, y, c_list_iterator):
         mean_quality = round(np.mean(qualities_c), 5)
         qualities.append(mean_quality)
 
-        print("C: " + str(i))
-        print('Time:', datetime.datetime.now() - start_time)
-        print("Quality AUC-ROC: " + str(mean_quality))
+        if dump_clf:
+            dump(clf, "./models/" + model_name + ".joblib")
+
+    print("C: " + str(c))
+    print('Time:', datetime.datetime.now() - start_time)
+    print("Quality AUC-ROC: " + str(mean_quality))
 
     return qualities
 
@@ -128,7 +130,7 @@ def get_best_quality_c(qualities, start, step):
 
 def process_data_lr(X, y):
     kf = KFold(n_splits=5, shuffle=True)
-    start, stop, step = 1, 5, 0.1
+    start, stop, step = 1, 5, 1
     c_estimated = True  # False, если нужно подобрать заново
     best_c = 3.8
     if c_estimated:
@@ -142,7 +144,9 @@ def process_data_lr(X, y):
     # Чем вы можете объяснить эту разницу?
     # Быстрее ли работает логистическая регрессия по сравнению с градиентным бустингом?
 
-    qualities = process_lr(kf, X, y, c_list_iterator)
+    model_name = 'lr'
+    qualities = process_lr(kf, X, y, c_list_iterator, model_name, c_estimated)
+
     max_q, best_c = get_best_quality_c(qualities, start, step)
 
     print("Max quality: ", max_q)  # Без масштабирования: 0.51602. С масштабированием: 0.71024
@@ -176,3 +180,13 @@ def process_data_lr(X, y):
     # Качество: 0.75201 при С = 3.8000000000000003
     # После использование мешка слов качество заметно улучшилось. Это связано с тем, что комманда имеет больший шанс
     # выйграть, если в ней присутствуют определенные герои.
+
+
+def test_lr(X, y):
+    kf = KFold(n_splits=5, shuffle=True)
+    best_c = 3.8
+    start, stop, step = best_c, best_c, best_c
+    c_list_iterator = iter(CList(start, stop, step))
+    qualities = process_lr(kf, X, y, c_list_iterator, '', False)
+    max_q, best_c = get_best_quality_c(qualities, start, step)
+    print("Max quality: ", max_q)
