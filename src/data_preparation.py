@@ -145,3 +145,12 @@ def prepare_data_lr(y_name):
     # ------------------------------------------------------------------------------------------------------------------
 
     return X, y
+
+
+def prepare_test_data_lr():
+    data = pd.read_csv('./data/features_test.csv', index_col='match_id')
+    columns_with_empty = detect_empty_columns(data)
+    data = handle_empty(data, columns_with_empty, 0)
+    X_scaled = scale_data(data.values)
+    X = process_categorial(108, data, X_scaled)
+    return X, data

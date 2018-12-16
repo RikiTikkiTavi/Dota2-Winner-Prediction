@@ -5,6 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 import numpy as np
 from joblib import dump, load
+import pandas as pd
 
 
 def process_gradient_boosting(n_estimators, step, kf, X, y):
@@ -182,11 +183,13 @@ def process_data_lr(X, y):
     # выйграть, если в ней присутствуют определенные герои.
 
 
-def test_lr(X, y):
-    kf = KFold(n_splits=5, shuffle=True)
-    best_c = 3.8
-    start, stop, step = best_c, best_c, best_c
-    c_list_iterator = iter(CList(start, stop, step))
-    qualities = process_lr(kf, X, y, c_list_iterator, '', False)
-    max_q, best_c = get_best_quality_c(qualities, start, step)
-    print("Max quality: ", max_q)
+def test_lr(X, data_x):
+    clf = load('./models/lr.joblib')
+    predictions_df = pd.DataFrame(clf.predict_proba(X))
+    predictions_df.columns = ['dire_win', 'radiant_win']
+    predictions_df.index = data_x.index
+    print("Mean:\n", predictions_df.mean())
+    print("Max prob. radiant win: ", max(predictions_df['radiant_win']))  # 0.9966559346546404
+    print("Min prob. radiant win: ", min(predictions_df['radiant_win']))  # 0.00956029948527895
+    result = predictions_df.drop(['dire_win'], axis=1)
+    result.to_csv('./data/result.csv')
