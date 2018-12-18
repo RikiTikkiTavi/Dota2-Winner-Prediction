@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61cd1cb6-3994-4282-9927-a228392d7c04" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/result.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/result.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/result.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data/result_ru.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_processing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/result_ru.ipynb" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +46,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/data_preparation.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-2694">
@@ -64,8 +61,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/data_processing.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2106">
-              <caret line="96" column="59" lean-forward="true" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="59" />
+            <state relative-caret-position="582">
+              <caret line="192" column="53" selection-start-line="192" selection-start-column="53" selection-end-line="192" selection-end-column="53" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -73,11 +70,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/result_ru.ipynb">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/data/result.ipynb">
           <provider selected="true" editor-type-id="ipnb-editor">
             <state>
-              <selected id="2" />
+              <selected id="0" />
             </state>
           </provider>
         </entry>
@@ -120,8 +117,8 @@
         <option value="$PROJECT_DIR$/data/result1.ipynb" />
         <option value="$PROJECT_DIR$/data/result.ipynb" />
         <option value="$PROJECT_DIR$/src/data_processing.py" />
-        <option value="$PROJECT_DIR$/data/result_ru.ipynb" />
         <option value="$PROJECT_DIR$/src/data_preparation.py" />
+        <option value="$PROJECT_DIR$/data/result_ru.ipynb" />
       </list>
     </option>
   </component>
@@ -334,7 +331,7 @@
       <workItem from="1544367655335" duration="159000" />
       <workItem from="1544367826473" duration="16459000" />
       <workItem from="1544877027822" duration="30451000" />
-      <workItem from="1545057980064" duration="14602000" />
+      <workItem from="1545057980064" duration="15362000" />
     </task>
     <task id="LOCAL-00001" summary="Comments, some experiments.">
       <created>1544384761643</created>
@@ -371,11 +368,18 @@
       <option name="project" value="LOCAL" />
       <updated>1544963340458</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Jypiter notebook">
+      <created>1545146988229</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1545146988229</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62144000" />
+    <option name="totallyTimeSpent" value="62904000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -390,7 +394,7 @@
     <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49887133" visible="true" weight="0.2705443" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49887133" visible="true" weight="0.2705443" />
       <window_info id="Structure" order="1" sideWeight="0.5011287" side_tool="true" weight="0.26414087" />
       <window_info id="Favorites" order="2" sideWeight="0.5011287" side_tool="true" weight="0.26414087" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -425,7 +429,8 @@
     <MESSAGE value="Linear regression and data preprocessing for it" />
     <MESSAGE value="Tried multiprocessing.&#10;Process test data" />
     <MESSAGE value="Process test data. Bugfixes. Save result" />
-    <option name="LAST_COMMIT_MESSAGE" value="Process test data. Bugfixes. Save result" />
+    <MESSAGE value="Jypiter notebook" />
+    <option name="LAST_COMMIT_MESSAGE" value="Jypiter notebook" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/README.md">
@@ -504,6 +509,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/data_preparation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2694">
+          <caret line="36" column="47" selection-start-line="36" selection-start-column="47" selection-end-line="36" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/data/result_ru.ipynb">
       <provider selected="true" editor-type-id="ipnb-editor">
         <state>
@@ -513,21 +528,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/data_processing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2106">
-          <caret line="96" column="59" lean-forward="true" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="59" />
+        <state relative-caret-position="582">
+          <caret line="192" column="53" selection-start-line="192" selection-start-column="53" selection-end-line="192" selection-end-column="53" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data_preparation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2694">
-          <caret line="36" column="47" selection-start-line="36" selection-start-column="47" selection-end-line="36" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/data/result.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
         </state>
       </provider>
     </entry>
