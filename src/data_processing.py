@@ -96,9 +96,9 @@ def process_lr(kf, X, y, c_list_iterator, model_name, dump_clf):
         if dump_clf:
             dump(clf, "./models/" + model_name + ".joblib")
 
-    print("C: " + str(c))
-    print('Time:', datetime.datetime.now() - start_time)
-    print("Quality AUC-ROC: " + str(mean_quality))
+        print("C: " + str(c))
+        print('Time:', datetime.datetime.now() - start_time)
+        print("Quality AUC-ROC: " + str(mean_quality))
 
     return qualities
 
